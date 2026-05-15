@@ -63,6 +63,18 @@ inspectors for both `.onnx` and `.engine` files, latency /
 throughput / memory probes, and a two-engine accuracy differ for
 spotting INT8 regressions.
 
+### [edge-anomaly-detection](https://github.com/Abdirayimov/edge-anomaly-detection)
+**C++ &middot; PaDiM &middot; OpenCV &middot; TensorRT &middot; edge**
+
+Real-time anomaly detection on industrial / perimeter video.
+Three orthogonal detectors fused under temporal smoothing and ROI
+gating: MOG2 background subtraction, scene-change (HSV histogram +
+DCT pHash + edge density), and PaDiM per-position Mahalanobis on
+pretrained ResNet18 features. Polygonal zones with severity
+multipliers and ignore masks. Pluggable alert sinks. Ships with a
+Python scaffold to fit the PaDiM Gaussian statistics on a folder
+of "normal" images.
+
 ## Stack I reach for
 
 |                | |
