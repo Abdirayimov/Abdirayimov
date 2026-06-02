@@ -1,111 +1,115 @@
 <h1 align="center">Khusan Abdirayimov</h1>
 
 <p align="center">
-  <b>Computer vision engineer</b> &middot; production CV/ML on NVIDIA DeepStream, TensorRT, and CUDA<br>
-  <a href="mailto:khusanabdirayimov@gmail.com">khusanabdirayimov@gmail.com</a>
+  <b>Computer-vision engineer</b> — production multi-camera video analytics<br>
+  NVIDIA DeepStream · TensorRT · CUDA · C++
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus&logoColor=white" alt="C++17">
+  <img src="https://img.shields.io/badge/CUDA-12.x-76B900?logo=nvidia&logoColor=white" alt="CUDA">
+  <img src="https://img.shields.io/badge/TensorRT-8.6%2B%20%2F%2010%2F11-76B900?logo=nvidia&logoColor=white" alt="TensorRT">
+  <img src="https://img.shields.io/badge/DeepStream-7.x%20%2F%208.x-76B900?logo=nvidia&logoColor=white" alt="DeepStream">
+  <img src="https://img.shields.io/badge/PyTorch-2.x-EE4C2C?logo=pytorch&logoColor=white" alt="PyTorch">
+  <img src="https://img.shields.io/badge/OpenCV-4.x-5C3EE8?logo=opencv&logoColor=white" alt="OpenCV">
+  <img src="https://img.shields.io/badge/Docker-multi--stage-2496ED?logo=docker&logoColor=white" alt="Docker">
 </p>
 
 ---
 
-## What I work on
+I build production multi-camera video analytics — detection, tracking, pose,
+recognition, and the unglamorous engineering between them: batched TRT
+inference, INT8 calibration, DeepStream pipelines, FAISS-scale vector search,
+custom plugins.
 
-I build production multi-camera video analytics: detection,
-tracking, pose, recognition, and the unglamorous engineering
-between them - batched TRT inference, INT8 calibration, DeepStream
-pipelines, FAISS-scale vector search, custom plugins.
+The repositories below are **clean-room reference implementations** of patterns
+I have shipped. The code is original, the algorithms are public, and every demo
+GIF is the **actual C++ binary** running on a public clip (rendered on an
+RTX 4080) — not a mock-up.
 
-My pinned repositories below are clean-room reference
-implementations of patterns I have shipped. The code is original,
-the algorithms are public (SCRFD, ArcFace, YOLOv8, RTMPose, ST-GCN,
-BYTETrack, OSNet), and only public datasets and synthetic test
-streams are used.
+## Featured work
 
-## Featured projects
+### [multi-camera-person-tracking](https://github.com/Abdirayimov/multi-camera-person-tracking) &nbsp;·&nbsp; `C++ · YOLO11 · BYTETrack · OSNet · Hungarian`
 
-### [multi-stream-face-recognition](https://github.com/Abdirayimov/multi-stream-face-recognition)
-**C++ &middot; DeepStream &middot; TensorRT &middot; FAISS GPU**
+<a href="https://github.com/Abdirayimov/multi-camera-person-tracking">
+  <img src="https://raw.githubusercontent.com/Abdirayimov/multi-camera-person-tracking/main/docs/assets/mctrack_demo.gif" width="470" alt="YOLO11 + BYTETrack tracking a busy concourse">
+</a>
 
-Multi-camera face recognition pipeline: SCRFD detector + ArcFace
-embedder + FAISS GPU index, all wired through a DeepStream
-GStreamer pipeline with thread-safe source add/remove. Includes an
-adaptive IVF-Flat / IVF-PQ index strategy that auto-selects based
-on enrollment size, and a probe chain that batches detections
-across cameras before encoding.
+YOLO11 detection → BYTETrack (three pluggable backends) → OSNet ReID → a
+cross-camera identity matcher that keeps a **global id** per person across
+views (ReID cosine, gated by zone topology + a spatial-temporal window, solved
+with Hungarian assignment).
 
-### [skeleton-action-recognition](https://github.com/Abdirayimov/skeleton-action-recognition)
-**C++ &middot; PyTorch &middot; DeepStream &middot; ST-GCN**
+### [edge-anomaly-detection](https://github.com/Abdirayimov/edge-anomaly-detection) &nbsp;·&nbsp; `C++ · PaDiM · OpenCV · TensorRT`
 
-Two-stage skeleton-based action recognition: YOLOv8 person
-detection + RTMPose 17-keypoint estimation + ST-GCN classifier,
-running through a NvDCF-tracked DeepStream pipeline. Per-track
-skeleton buffer with forward-fill, centroid normalisation, and
-configurable stride for re-classification. Ships with a PyTorch
-Lightning training pipeline for the 10-class NTU-RGBD-60 subset.
+<a href="https://github.com/Abdirayimov/edge-anomaly-detection">
+  <img src="https://raw.githubusercontent.com/Abdirayimov/edge-anomaly-detection/main/docs/assets/eanom_demo.gif" width="470" alt="Real-time anomaly detection with motion + scene-change + ROI gating">
+</a>
 
-### [multi-camera-person-tracking](https://github.com/Abdirayimov/multi-camera-person-tracking)
-**C++ &middot; BYTETrack &middot; OSNet &middot; Hungarian matching**
+Real-time anomaly detection for industrial / perimeter video. Three orthogonal
+detectors (MOG2 motion, scene-change, PaDiM feature distance) fused under
+temporal smoothing, ROI zones, and severity-laddered alerts.
 
-Cross-camera person tracking with three pluggable single-camera
-backends (BYTETrack, IoU baseline, NvDCF) behind one interface; a
-rolling per-track OSNet appearance gallery; and a global identity
-matcher that gates ReID similarity by zone topology and a
-spatial-temporal window, then assigns optimal pairings via the
-Hungarian algorithm.
+### [skeleton-action-recognition](https://github.com/Abdirayimov/skeleton-action-recognition) &nbsp;·&nbsp; `C++ · PyTorch · ST-GCN · TensorRT`
 
-### [tensorrt-optimization-toolkit](https://github.com/Abdirayimov/tensorrt-optimization-toolkit)
-**C++ &middot; TensorRT &middot; INT8 calibration &middot; plugins**
+<a href="https://github.com/Abdirayimov/skeleton-action-recognition">
+  <img src="https://raw.githubusercontent.com/Abdirayimov/skeleton-action-recognition/main/docs/assets/skeleton_demo.gif" width="300" alt="ST-GCN classifying NTU-RGB+D skeleton clips">
+</a>
 
-The unglamorous parts of shipping TRT in production: ONNX -> engine
-compilation with FP32/FP16/INT8, IInt8EntropyCalibrator2 with
-on-disk cache, dynamic shape profiles, a reference custom plugin
-(`GeluPlugin` via `IPluginV2DynamicExt`), polygraphy-style
-inspectors for both `.onnx` and `.engine` files, latency /
-throughput / memory probes, and a two-engine accuracy differ for
-spotting INT8 regressions.
+YOLO11 + RTMPose + ST-GCN two-stage action recognition. The ST-GCN here was
+**trained from scratch on public NTU-RGB+D** (76% cross-subject acc) and runs
+as a TensorRT engine — the GIF shows it classifying held-out clips, 10/10.
 
-### [edge-anomaly-detection](https://github.com/Abdirayimov/edge-anomaly-detection)
-**C++ &middot; PaDiM &middot; OpenCV &middot; TensorRT &middot; edge**
+### [multi-stream-face-recognition](https://github.com/Abdirayimov/multi-stream-face-recognition) &nbsp;·&nbsp; `C++ · DeepStream · TensorRT · FAISS GPU`
 
-Real-time anomaly detection on industrial / perimeter video.
-Three orthogonal detectors fused under temporal smoothing and ROI
-gating: MOG2 background subtraction, scene-change (HSV histogram +
-DCT pHash + edge density), and PaDiM per-position Mahalanobis on
-pretrained ResNet18 features. Polygonal zones with severity
-multipliers and ignore masks. Pluggable alert sinks. Ships with a
-Python scaffold to fit the PaDiM Gaussian statistics on a folder
-of "normal" images.
+<a href="https://github.com/Abdirayimov/multi-stream-face-recognition">
+  <img src="https://raw.githubusercontent.com/Abdirayimov/multi-stream-face-recognition/main/docs/assets/face_detect_demo.jpg" width="470" alt="SCRFD detecting all 29 faces in the 1927 Solvay Conference photo">
+</a>
+
+SCRFD + ArcFace + FAISS GPU through a DeepStream pipeline, with adaptive
+IVF-Flat / IVF-PQ index selection. The detector resolves its outputs by shape,
+so it runs the stock insightface export directly — here finding all 29 faces in
+the 1927 Solvay photo.
+
+### [tensorrt-optimization-toolkit](https://github.com/Abdirayimov/tensorrt-optimization-toolkit) &nbsp;·&nbsp; `C++ · TensorRT · INT8 · plugins`
+
+<a href="https://github.com/Abdirayimov/tensorrt-optimization-toolkit">
+  <img src="https://raw.githubusercontent.com/Abdirayimov/tensorrt-optimization-toolkit/main/docs/assets/trt_toolkit_demo.png" width="560" alt="trt-toolkit build / inspect / benchmark on a ResNet18 FP16 engine">
+</a>
+
+ONNX → engine compilation (FP32/FP16/INT8 with entropy calibration), dynamic
+shape profiles, a reference custom plugin, polygraphy-style inspectors, and a
+two-engine accuracy differ for catching INT8 regressions.
 
 ## Stack I reach for
 
-|                | |
+| | |
 |----------------|--|
-| **Inference** | NVIDIA DeepStream 7.x / 8.x, TensorRT 8.6+ / 10, CUDA 12, FAISS GPU |
-| **Models** | YOLOv8/v11, SCRFD, ArcFace (insightface), RTMPose, ST-GCN, OSNet |
-| **Training** | PyTorch 2.x, PyTorch Lightning, Hydra, mmpose-style toolchains |
-| **C++** | C++17, CMake 3.22+, Eigen 3.4, spdlog, yaml-cpp, GStreamer |
-| **Serving** | gRPC, FastAPI, Redis, PostgreSQL + pgvector |
-| **Ops** | Docker multi-stage, Linux (Ubuntu 22.04), CUDA Container Toolkit |
+| **Inference** | NVIDIA DeepStream 7.x / 8.x · TensorRT 8.6+ / 10 / 11 · CUDA 12 · FAISS GPU |
+| **Models** | YOLOv8 / YOLO11 · SCRFD · ArcFace · RTMPose · ST-GCN · OSNet · PaDiM |
+| **Training** | PyTorch 2.x · PyTorch Lightning · Hydra |
+| **C++** | C++17 · CMake · Eigen · spdlog · yaml-cpp · GStreamer |
+| **Serving / data** | gRPC · FastAPI · Redis · PostgreSQL + pgvector |
+| **Ops** | Docker multi-stage · Linux · NVIDIA Container Toolkit |
 
 ## How I work
 
-- I prefer **measure-then-optimise**. Every project I ship has a
-  benchmark CLI that I keep honest with `cudaEvent`-based timing
-  and percentile latency, not means.
-- I **gate INT8 conversions against accuracy diffs** rather than
-  trusting that the conversion "looked fine".
-- For deployment, **Docker + a single `cmake --install` step**
-  beats every other distribution mechanism I have tried.
-- Configuration is **YAML, validated at load time**, not flag
-  spaghetti.
+- **Measure, then optimise.** Every project ships a benchmark CLI kept honest
+  with `cudaEvent` timing and percentile latency — not means.
+- **Gate INT8 against accuracy diffs**, never "it looked fine".
+- **Config is YAML, validated at load**, not flag spaghetti.
+- **Deploy as Docker + one `cmake --install`.**
 
 ## Open to
 
-- Production CV consulting (DeepStream / TensorRT / multi-camera)
-- Inference-optimisation contracts (INT8, plugins, throughput)
-- ML systems work where the bottleneck is engineering, not
-  modelling
+Production CV consulting (DeepStream / TensorRT / multi-camera) · inference
+optimisation (INT8, plugins, throughput) · ML-systems work where the bottleneck
+is engineering, not modelling.
 
-## Contact
+<p align="center">
+  <a href="mailto:khusanabdirayimov@gmail.com"><img src="https://img.shields.io/badge/Email-khusanabdirayimov%40gmail.com-D14836?logo=gmail&logoColor=white" alt="Email"></a>
+</p>
 
-- Email: [khusanabdirayimov@gmail.com](mailto:khusanabdirayimov@gmail.com)
-- GitHub: this is it
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Abdirayimov&layout=compact&langs_count=8&theme=github_dark&hide_border=true" alt="Top languages">
+</p>
