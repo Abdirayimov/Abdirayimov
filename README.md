@@ -20,11 +20,13 @@
 I build production multi-camera video analytics — detection, tracking, pose,
 recognition, and the unglamorous engineering between them: batched TRT
 inference, INT8 calibration, DeepStream pipelines, FAISS-scale vector search,
-custom plugins.
+custom plugins. I also build **agentic AI systems** — hybrid retrieval (RAG),
+tool-use orchestration, and RL policies with audit trails and human-in-the-loop
+gates.
 
 The repositories below are **clean-room reference implementations** of patterns
 I have shipped. The code is original, the algorithms are public, and every demo
-GIF is the **actual C++ binary** running on a public clip (rendered on an
+is the **actual binary / CLI running** (the C++ vision demos rendered on an
 RTX 4080) — not a mock-up.
 
 ## Featured work
@@ -81,12 +83,25 @@ ONNX → engine compilation (FP32/FP16/INT8 with entropy calibration), dynamic
 shape profiles, a reference custom plugin, polygraphy-style inspectors, and a
 two-engine accuracy differ for catching INT8 regressions.
 
+### [agentic-fiscal-rag](https://github.com/Abdirayimov/agentic-fiscal-rag) &nbsp;·&nbsp; `Python · BGE-M3 RAG · RL (Q-learning) · audit + HITL`
+
+<a href="https://github.com/Abdirayimov/agentic-fiscal-rag">
+  <img src="https://raw.githubusercontent.com/Abdirayimov/agentic-fiscal-rag/main/docs/assets/afr_demo.png" width="560" alt="agentic-fiscal-rag answering a tax question with effective-date versioning and an audited computation">
+</a>
+
+An agentic RAG system over fiscal/tax law: BGE-M3 hybrid retrieval over an
+article-level index, a deterministic **audited** compute layer, and an RL policy
+that learns *when* to retrieve, compute, answer — or escalate to a human. The
+same question on two dates returns two article versions; every computed answer
+cites the article, version and inputs it used. DB-less and reproducible.
+
 ## Stack I reach for
 
 | | |
 |----------------|--|
 | **Inference** | NVIDIA DeepStream 7.x / 8.x · TensorRT 8.6+ / 10 / 11 · CUDA 12 · FAISS GPU |
 | **Models** | YOLOv8 / YOLO11 · SCRFD · ArcFace · RTMPose · ST-GCN · OSNet · PaDiM |
+| **LLM / agents** | RAG (BGE-M3 hybrid · RRF) · tool-use orchestration · RL (Q-learning) · audit + HITL |
 | **Training** | PyTorch 2.x · PyTorch Lightning · Hydra |
 | **C++** | C++17 · CMake · Eigen · spdlog · yaml-cpp · GStreamer |
 | **Serving / data** | gRPC · FastAPI · Redis · PostgreSQL + pgvector |
@@ -103,7 +118,8 @@ two-engine accuracy differ for catching INT8 regressions.
 ## Open to
 
 Production CV consulting (DeepStream / TensorRT / multi-camera) · inference
-optimisation (INT8, plugins, throughput) · ML-systems work where the bottleneck
+optimisation (INT8, plugins, throughput) · **agentic AI / RAG systems**
+(retrieval, tool-use, auditable outputs) · ML-systems work where the bottleneck
 is engineering, not modelling.
 
 <p align="center">
