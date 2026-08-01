@@ -91,7 +91,7 @@ with Hungarian assignment).
   <img src="https://raw.githubusercontent.com/Abdirayimov/skeleton-action-recognition/main/docs/assets/skeleton_demo.gif" width="300" alt="ST-GCN classifying NTU-RGB+D skeleton clips">
 </a>
 
-YOLO11 + RTMPose + ST-GCN two-stage action recognition. The ST-GCN here was
+YOLOv8 + RTMPose + ST-GCN two-stage action recognition. The ST-GCN here was
 **trained from scratch on public NTU-RGB+D** (76% cross-subject acc) and runs
 as a TensorRT engine — the GIF shows it classifying held-out clips, 10/10.
 
