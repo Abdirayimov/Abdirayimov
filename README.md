@@ -57,13 +57,13 @@ cites the article, version and inputs it used. DB-less and reproducible.
 SCRFD + ArcFace + FAISS GPU through a DeepStream pipeline, with adaptive
 IVF-Flat / IVF-PQ index selection. The detector resolves its outputs by shape,
 so it runs the stock insightface export directly — here finding all 29 faces in
-the 1927 Solvay photo. 86 unit tests cover the algorithmic stages.
+the 1927 Solvay photo. 101 unit tests cover the algorithmic stages.
 
 ### [eduvision-cqi](https://github.com/Abdirayimov/eduvision-cqi) &nbsp;·&nbsp; `Python · IEEE Access · fuzzy inference · GRU`
 
 [![CI](https://github.com/Abdirayimov/eduvision-cqi/actions/workflows/ci.yml/badge.svg)](https://github.com/Abdirayimov/eduvision-cqi/actions/workflows/ci.yml)
 
-Code accompanying a published IEEE Access paper on classroom process quality
+Code accompanying an IEEE Access submission (revised manuscript under review) on classroom process quality
 assessment from valence–arousal trajectories. A Mamdani fuzzy inference layer
 sits on top of reconstructed VA signals to produce a continuous quality index.
 43 tests verify the reference implementation against the printed tables, so a
@@ -78,7 +78,7 @@ corpus are released — the README explains why.
   <img src="https://raw.githubusercontent.com/Abdirayimov/multi-camera-person-tracking/main/docs/assets/mctrack_demo.gif" width="470" alt="YOLO11 + BYTETrack tracking a busy concourse">
 </a>
 
-YOLO11 detection → BYTETrack (three pluggable backends) → OSNet ReID → a
+YOLO11 detection → BYTETrack (two in-process backends, NvDCF via DeepStream) → OSNet ReID → a
 cross-camera identity matcher that keeps a **global id** per person across
 views (ReID cosine, gated by zone topology + a spatial-temporal window, solved
 with Hungarian assignment).
